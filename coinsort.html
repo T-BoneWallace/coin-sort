@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Coin Sorting</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8">
+        <style>
+            h1 {
+                text-align: center;
+                font-size:40px;
+                padding: 15px;
+                margin: 10px;
+            }
+
+            h3 {
+                font-size: 25px;
+                margin-right: auto;
+                margin-left: auto;
+            }
+
+            body {
+                background-color:aliceblue;
+                font-family:Verdana, Geneva, Tahoma, sans-serif;
+            }
+
+            #piggybank, #piggybankstr {
+                justify-content: space-evenly;
+                text-align: center;
+            }
+
+            img {
+                width: 140px;
+                height: 140px;
+                text-align: center;
+                display: inline-block;
+                border-radius: 50%;
+                padding: 20px;
+
+            }
+
+            p {
+                font-size: 50px;
+                display: inline-block;
+                font-weight: 500;
+                text-align: center;
+                padding: 20px;
+                margin: 0px 20px 0px 20px;
+                border: 2px dotted goldenrod;
+                border-radius: 50%;
+                background-color: lightyellow;
+            }
+
+            .goal {
+                border: 3px solid #223344;
+                display: table-cell;
+                height: 250px;
+                width: 20%;
+                text-align: center;
+                border-radius: 10px;
+
+            }
+
+            .goals {
+                background-color: aliceblue;
+                display: table;
+                width: 100%;
+            }
+
+            #congradulations {
+                text-align: center;
+                font-size: 90px;
+                color: orange;
+                font-weight: 500;
+                padding: 20px;
+            }
+
+            #playagain {
+                display: none;
+                text-align: center;
+            }
+
+            #playagainbutton {
+                font-size: 40px;
+                background-color: orange;
+                border-radius: 15px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Coin Sorting</h1>
+       
+
+        <div class="goals">
+
+            <div id="nickel" class="goal">
+                <h3>Nickel</h3>
+            </div>
+
+            <div id="dime" class="goal" >
+                <h3>Dime</h3>
+            </div>
+
+            <div id="quarter" class="goal">
+                <h3>Quarter</h3>
+            </div>
+
+            <div id="loonie" class="goal">
+                <h3>Loonie</h3>
+        
+            </div>
+
+            <div id="twonie" class="goal">
+                <h3>Toonie</h3>
+            </div>
+        </div>
+
+        <div id="piggybank">
+
+
+                <img ondrag="moveEl(event)" id="nickelcoin" data-partner="nickelstr" data-goal="nickel" draggable="true" ondragend="enddrag(event)" src="https://www.coinsunlimited.ca/image/cache/data/decimal-coins-canada/rolls/1964/1964-canadian-5-cent-beaver-nickel-roll-coin-tube-2-800x800.jpg">
+         
+        
+                <img ondrag="moveEl(event)" id="dimecoin" data-partner="dimestr" data-goal="dime" draggable="true" ondragend="enddrag(event)" src="https://d2nks69q2dso6k.cloudfront.net/image/cache/image/data/decimal-coins-canada/rolls/2013/2013-canadian-10-cent-bluenose-schooner-dime-coin-1-800x800.jpg">
+       
+
+                <img ondrag="moveEl(event)" id="quartercoin" data-partner="quarterstr" data-goal="quarter" draggable="true" ondragend="enddrag(event)" src="https://d2nks69q2dso6k.cloudfront.net/image/cache/image/data/decimal-coins-canada/rolls/2018/2018-canadian-25-cent-caribou-quarter-coin-1-800x800.jpg">
+
+                <img ondrag="moveEl(event)"  id="looniecoin" data-partner="looniestr" data-goal="loonie" draggable="true" ondragend="enddrag(event)" src="https://www.coinsunlimited.ca/image/cache/data/decimal-coins-canada/rolls/2011/2011-canadian-1-dollar-common-loon-1-800x800.jpg">
+ 
+                <img ondrag="moveEl(event)" id="twooniecoin" data-partner="twooniestr" data-goal="twonie" draggable="true" ondragend="enddrag(event)" src="https://www.bankofcanadamuseum.ca/wp-content/uploads/2019/02/168-03-toonie-coin.jpg">
+
+        </div>
+
+        <div id="piggybankstr">
+
+
+            <p ondrag="moveEl(event)" id="nickelstr" data-partner="nickelcoin" data-goal="nickel" draggable="true" ondragend="enddrag(event)">5₵</p>
+     
+    
+            <p ondrag="moveEl(event)" id="dimestr" data-partner="dimecoin" data-goal="dime" draggable="true" ondragend="enddrag(event)">10₵</p>
+   
+
+            <p ondrag="moveEl(event)" id="quarterstr" data-partner="quartercoin" data-goal="quarter" draggable="true" ondragend="enddrag(event)">25₵</p>
+
+            <p ondrag="moveEl(event)"  id="looniestr" data-partner="looniecoin" data-goal="loonie" draggable="true" ondragend="enddrag(event)">$1</p>
+
+            <p ondrag="moveEl(event)" id="twooniestr" data-partner="twooniecoin" data-goal="twonie" draggable="true" ondragend="enddrag(event)">$2</p>
+    </div>
+
+        <div id="congradulations"></div>
+
+        <div id="playagain"><button id="playagainbutton" onclick="reload()">Play Again!</button></div>
+    
+    </body>
+    <script>
+
+        //shuffles coins and coinstrs
+
+        function shuffle() {
+
+            var coinids = ['#nickelcoin', '#dimecoin', '#quartercoin', '#looniecoin', '#twooniecoin'];
+
+            var coinstrids = ['#nickelstr', '#dimestr', '#quarterstr', '#looniestr', '#twooniestr'];
+        
+            const bank = document.querySelector('#piggybank');
+
+            const bankstr = document.querySelector('#piggybankstr');
+
+            //shuffle coins
+
+            for (i=0; i < 5; i++) {
+                var randomchild = Math.floor(Math.random() * 5);
+                var tempel =  document.querySelector(coinids[randomchild]);
+                bank.appendChild(tempel);
+            }
+
+            //shuffle coinstrs
+
+            for (i=0; i < 5; i++) {
+                var randomchild = Math.floor(Math.random() * 5);
+                var tempel =  document.querySelector(coinstrids[randomchild]);
+                bankstr.appendChild(tempel);
+            }
+        }
+        //ondrag function for elements
+
+        function moveEl(event) {
+                event.dataTransfer.setDragImage(event.target, 0, 0);
+                event.target.style.display = "none";
+        };
+
+        //display winning message and play again button
+
+        function winner() {
+            var body = document.querySelector('body');
+            body.style.background = "lightgreen";
+            var congradulations = document.querySelector('#congradulations');
+            var goalsbg = document.querySelector('.goals');
+            goalsbg.style.background = "lightgreen";
+            congradulations.innerHTML = "Great Job!"
+            var playagain = document.querySelector('#playagain');
+            playagain.style.display = 'block';
+        }
+
+        //check if game has been won
+
+        function gamecheck() {
+            const goals = document.querySelectorAll('.goal');
+            var fail = false;
+
+            for (i=0; i < goals.length; i++) {
+                if (goals[i].style.background == "") {
+                    fail = true;
+                };
+            };
+
+            if (fail == false) {
+                winner();
+            };
+        };
+
+        //check if coin is inside the goal
+
+        function checkcoin(triggerElement, goal, partner) {
+            var coin = document.getElementById(triggerElement);
+            var goal = document.getElementById(goal);
+            var partner = document.getElementById(partner);
+
+            //calculate coin positions and see if theyre near the goal
+
+            var validy = false;
+            var validx = false;
+            var validpartnery = false;
+            var validpartnerx = false;
+
+
+            //check trigger element
+
+            if (coin.offsetLeft > goal.offsetLeft & coin.offsetLeft < (goal.offsetLeft + goal.offsetWidth)) {
+                validx = true;
+            }
+
+            if (coin.offsetTop > goal.offsetTop & coin.offsetTop < (goal.offsetTop + goal.offsetHeight)) {
+                validy = true;
+            }
+
+            //check partner element
+
+            if (partner.offsetLeft > goal.offsetLeft & partner.offsetLeft < (goal.offsetLeft + goal.offsetWidth)) {
+                validpartnerx = true;
+            }
+
+            if (partner.offsetTop > goal.offsetTop & partner.offsetTop < (goal.offsetTop + goal.offsetHeight)) {
+                validpartnery = true;
+            }
+
+            var atleastone = false;
+            var coinongoal = false;
+
+            //check if trigger element inside goal
+
+            if (validy && validx) {
+                    atleastone = true;
+                    var coinongoal = true;
+                    goal.style.border = "5px solid green";
+                    coin.style.display = "block";
+                    coin.style.position = "";
+                    coin.style.margin = "0px";
+                    var coinwrap = document.createElement('h5');
+                    coinwrap.style.padding = "5px";
+                    coinwrap.style.margin = "0px"
+                    coinwrap.appendChild(coin);
+                    goal.appendChild(coinwrap);
+                    
+            };
+
+            //check if trigger and partner both inside goal
+
+            if (validpartnerx && validpartnery && coinongoal) {
+                    goal.style.border = "5px solid green";
+                    goal.style.background = "lightgreen";
+            };
+
+            //check if only partner inside goal
+
+            if (validpartnerx && validpartnery) {
+                atleastone = true;
+            }
+
+            //keep border green if at least one inside goal
+            if (!atleastone) {
+                goal.style.border = "1px solid #223344";
+                goal.style.background = '';
+            };
+
+            gamecheck();
+        };
+
+        //moves the element position to where enddrag happened
+
+        function enddrag(event) {
+            
+            var triggerElement = document.getElementById(event.target.id);
+            triggerElement.style.display = "block"
+            triggerElement.style.position = "absolute";
+            triggerElement.style.top = `${event.y-60 + window.scrollY}px`;
+            triggerElement.style.left = `${event.x-75}px`;
+            triggerElement.style.border = "none";
+
+            var goal = triggerElement.dataset.goal;
+            var partner = triggerElement.dataset.partner;
+            var triggerElement = event.target.id
+            checkcoin(triggerElement, goal, partner); 
+        }
+
+        //reset game
+
+        function reload() {
+            window.location.reload();
+        }
+
+        shuffle();
+    </script>
+</html>
